@@ -1,0 +1,112 @@
+
+  <div class="container" style="width: 50%;">
+    <form [formGroup]="dummyForm" (ngSubmit)="onSubmit(buttonType)">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>Paying To : {{marchantName}}</h4>
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <div class="form-group">
+                <label for="amount">Amount</label>&nbsp;
+                <input type="text" formControlName="amount" placeholder="Amount"  />
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  <div class="panel panel-default" *ngIf="!isSubmitted">
+    <div class="panel-heading">Enter Card Details</div>
+    <div class="panel-body">
+      <form [formGroup]="transactionForm" (ngSubmit)="onSubmit(buttonType)">
+        <div class="right-payment-sec">
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <div class="form-group">
+                <label for="cardHolderName">Name Of the Card holder</label>&nbsp;
+                <input type="text" class="form-control" formControlName="cardHolderName" placeholder="Name On Card" />
+               
+              </div>
+            </div>
+            <div class="col-lg-12 col-xs-12">
+              <div class="form-group">
+                <label for="cardNumber">Card Number</label>&nbsp;
+                <input type="text"  class="form-control" formControlName="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX"  />
+        
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="month">Expiration Month</label>
+                <select class="form-control" formControlName="month" placeholder="Select Month" 
+                
+                [ngClass]="{ 'is-invalid': isSubmitted && f.month.errors }">
+                  <!-- <option [value]="null">Select</option>
+                  <option *ngFor="let months of monthlist">{{months}}</option> -->
+                  <option *ngFor="let c of monthlist" [ngValue]= "c" >{{ c }}</option>
+                </select>
+               
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="year">Expiration Year</label>
+                <select class="form-control" formControlName="year" placeholder="Expiration Year" >
+                  <!-- <option [value]="null">Select</option> -->
+                  <option *ngFor="let c of years" [ngValue]="c" >{{ c }}</option>
+                  <!-- <option *ngFor="let year of years">{{year}}</option> -->
+                </select>
+              
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="cvv">Security Code</label>
+                <input type="text" class="form-control" formControlName="cvv" placeholder="Security Code" />
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="zipCode">Zip Code</label>
+                <input type="text" class="form-control" formControlName="zipCode" placeholder="Zip Code"/>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary" (click)="onSubmit('Save')"
+                  style="margin-right: 10px ;">Save</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit('Clear')">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+    </div>
+  </div>
+
+
+  <div class="panel panel-default" *ngIf="isSubmitted">
+    <div class="panel-heading"> </div>
+    <div class="panel-body">
+      <form [formGroup]="otpForm">
+        <div class="right-payment-sec">
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <div class="form-group">
+                <label for="otp">Enter OTP</label>&nbsp;
+                <input type="number" formControlName="otp" placeholder="XXXXXX">
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="margin-right: 10px ;" (click)="submitOtp()">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<h1>Transactions</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 20%">Id</th>
+            <th style="width: 20%">Location</th>
+            <th style="width: 20%">Receiver Name</th>
+            <th style="width: 20%">Amount</th>
+            <th style="width: 20%">Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let tran of transactions">
+            <td>{{tran.id}}</td>
+            <td>{{tran.location}}</td>
+            <td>{{tran.receiverName}}</td>
+            <td>{{tran.amount}}</td>
+            <td>{{tran.time}}</td>
+        </tr>
+        <tr *ngIf="!transactions">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

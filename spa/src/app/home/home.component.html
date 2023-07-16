@@ -1,0 +1,58 @@
+﻿<div class="p-4">
+    <div class="container">
+        <h1>Hi {{user?.firstName}}!</h1>
+        <p>Welcome to EZ-Bank</p>
+        <!-- <p><a routerLink="/users">Manage Users</a></p> -->
+    </div>
+    <div>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 20%">First Name</th>
+                        <th style="width: 20%">Last Name</th>
+                        <th style="width: 20%">Balance</th>
+                        <th style="width: 20%">Account Number</th>
+                        <th style="width: 20%">Language</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{user?.firstName}}</td>
+                        <td>{{user?.lastName}}</td>
+                        <td>{{user?.balance}}</td>
+                        <td>{{user?.accountNumber}}</td>
+                        <td>{{user?.language}}</td>
+                    </tr>
+                
+                </tbody>
+            </table>
+        </div>
+ 
+        
+        <p><b><u>Card Details</u></b></p>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 20%">Card Number</th>
+                        <th style="width: 20%">Card Type</th>
+                        <th style="width: 20%">Expiry Date</th>
+                        <th style="width: 20%">cvv</th>
+                        <th style="width: 20%">Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{user?.cardNumber}}</td>
+                        <td>{{user?.cardType}}</td>
+                        <td>{{user?.expiryDate}}</td>
+                        <td>{{user?.cvv}}</td>
+                        <td>{{user?.cardCategory}}</td>
+                    </tr>
+                
+                </tbody>
+            </table>
+    
+        </div>
+    </div>

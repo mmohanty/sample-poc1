@@ -96,6 +96,8 @@ public class UserService {
             return ResponseEntity.badRequest().build();
         }
 
+        userEntity.setFirstName(request.getFirstName());
+        userEntity.setLastName(request.getLastName());
         userEntity.setLanguage(request.getLanguage());
         userEntity.setCvv(request.getCvv());
         userEntity.setExpiryDate(request.getExpiryDate());

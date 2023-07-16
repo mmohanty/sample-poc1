@@ -6,15 +6,14 @@ import com.ezbank.entity.UserEntity;
 import com.ezbank.external.client.IpLocationServiceClient;
 import com.ezbank.model.request.TransactionAuthenticationRequest;
 import com.ezbank.model.request.TransactionRequest;
-import com.ezbank.model.response.PushNotificationMessage;
-import com.ezbank.model.response.Status;
-import com.ezbank.model.response.TransactionHistoryResponse;
-import com.ezbank.model.response.TransactionResponse;
+import com.ezbank.model.response.*;
 import com.ezbank.model.response.ip.IPLocation;
 import com.ezbank.repository.PushNotificationRepository;
 import com.ezbank.repository.TransactionRepository;
 import com.ezbank.repository.UserRepository;
+import com.ezbank.utils.Util;
 import com.google.gson.Gson;
+import com.maxmind.geoip2.DatabaseReader;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +61,9 @@ public class TransactionService {
 
     @Value("${date.format}")
     private String dateFormat;
+
+    @Autowired
+    private DatabaseReader reader;
 
     private Map<String, Integer> transactionFailuerCountMap = new ConcurrentHashMap<>();
 
@@ -144,7 +146,7 @@ public class TransactionService {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         //find location using ip
-        IPLocation ipLocation = null;
+        /*IPLocation ipLocation = null;
         if(StringUtils.equalsIgnoreCase("stubbed", ipLocationCall)){
             try {
                 String str = IOUtils.toString(this.getClass().getResourceAsStream("/sample/iplocation-sample.json"),
@@ -156,16 +158,24 @@ public class TransactionService {
             }
         }else {
             ipLocation = ipLocationServiceClient.getLocation(request.getIp(), apiipKey);
+        }*/
+        Location location = null;
+        if(StringUtils.equalsIgnoreCase("stubbed", ipLocationCall)){
+                location = Location.builder()
+                        .city("Hyderabad")
+                        .country("India").build();
+        }else {
+            location = Util.getLocation(reader, request.getIp());
         }
         String date = new SimpleDateFormat(dateFormat).format(new Date());
         PushNotificationMessage pushNotificationMessage = PushNotificationMessage.builder()
-                .regionName(ipLocation.getRegionName())
+                .regionName(location.getCity())
                 .receiverName(request.getReceiverName())
                 .time(date)
                 .amount(request.getAmount().toString())
-                .country(ipLocation.getCountryName())
+                .country(location.getCountry())
                 .transactionType("DEBIT")
-                .city(ipLocation.getCity()).build();
+                .city(location.getCity()).build();
 
         //Store Transaction in cache
         String transactionId = "TEZ-" + RandomStringUtils.randomAlphanumeric(10).toUpperCase();;

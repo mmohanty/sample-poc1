@@ -1,8 +1,17 @@
 package com.ezbank.utils;
 
+import com.ezbank.model.response.Location;
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.model.CityResponse;
+import com.maxmind.geoip2.record.Country;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class Util {
 
     static Map<Integer, String> map = new HashMap<>();
@@ -23,5 +32,27 @@ public class Util {
     }
     public static String getMonth(int index){
         return map.get(index);
+    }
+
+    public static Location getLocation(DatabaseReader reader, String ip){
+        try{
+
+            InetAddress ipAddress = InetAddress.getByName(ip);
+
+            CityResponse response = reader.city(ipAddress);
+
+            Country country = response.getCountry();
+            System.out.println(country.getName());
+            System.out.println(response.getCity().getName());
+
+            return Location.builder()
+                    .city(response.getCity().getName())
+                    .country(response.getCountry().getName()).build();
+        }catch(Exception e){
+            log.error("unable to get Location from IP");
+        }
+        return Location.builder()
+                .city("Hyderabad")
+                .country("India").build();
     }
 }

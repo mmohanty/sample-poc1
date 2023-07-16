@@ -1,7 +1,6 @@
 package com.ezbank.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -11,6 +10,9 @@ import java.math.BigDecimal;
 @Table(name= "USER")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
 
     @Id

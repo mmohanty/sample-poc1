@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -31,7 +30,7 @@ public class UserService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        User user = User.builder().id(entity.getId().toString()).firstName(entity.getFirstName())
+        User user = User.builder().id(entity.getId()).firstName(entity.getFirstName())
                 .lastName(entity.getLastName()).username(entity.getUsername()).language(entity.getLanguage())
                 .accountNumber(entity.getAccountNumber())
                 .cardNumber(entity.getCardNumber())
@@ -45,6 +44,17 @@ public class UserService {
 
     }
 
+    public ResponseEntity<UserEntity> getUserByName(String username) {
+        UserEntity entity = userRepository.findByUsername(username);
+
+        if(entity == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
+        return new ResponseEntity<>(entity, HttpStatus.OK);
+    }
+
     public ResponseEntity<User> getUser(String id) {
         Optional<UserEntity> entityOptional = userRepository.findById(Long.parseLong(id));
 
@@ -54,9 +64,42 @@ public class UserService {
 
         UserEntity entity = entityOptional.get();
 
-        User user = User.builder().id(entity.getId().toString()).firstName(entity.getFirstName())
+        User user = User.builder().id(entity.getId()).firstName(entity.getFirstName())
                 .lastName(entity.getLastName()).username(entity.getUsername()).language(entity.getLanguage()).build();
 
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    public ResponseEntity<User> createUser(User request) {
+        UserEntity userEntity = UserEntity.builder()
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .balance(request.getBalance())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .accountNumber(request.getAccountNumber())
+                .cardNumber(request.getCardNumber())
+                .cardCategory(request.getCardCategory())
+                .cardType(request.getCardType())
+                .cvv(request.getCvv())
+                .expiryDate(request.getExpiryDate())
+                .language(request.getLanguage())
+                .build();
+        userRepository.save(userEntity);
+        request.setId(userEntity.getId());
+        return ResponseEntity.ok(request);
+    }
+
+    public ResponseEntity<User> updateUser(User request) {
+        UserEntity userEntity = userRepository.findByUsername(request.getUsername());
+        if(userEntity == null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        userEntity.setLanguage(request.getLanguage());
+        userEntity.setCvv(request.getCvv());
+        userEntity.setExpiryDate(request.getExpiryDate());
+        userRepository.save(userEntity);
+        return ResponseEntity.ok(request);
     }
 }

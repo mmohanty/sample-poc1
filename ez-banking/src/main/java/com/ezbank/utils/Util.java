@@ -1,4 +1,4 @@
-package com.ezbank;
+package com.ezbank.utils;
 
 import java.util.HashMap;
 import java.util.Map;

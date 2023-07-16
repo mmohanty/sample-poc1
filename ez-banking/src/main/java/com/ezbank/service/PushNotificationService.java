@@ -1,6 +1,6 @@
 package com.ezbank.service;
 
-import com.ezbank.Util;
+import com.ezbank.utils.Util;
 import com.ezbank.entity.PushNotificationEntity;
 import com.ezbank.entity.UserEntity;
 import com.ezbank.model.request.PushNotificationRequest;

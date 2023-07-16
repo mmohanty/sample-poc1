@@ -1,5 +1,6 @@
 package com.ezbank.controller;
 
+import com.ezbank.entity.UserEntity;
 import com.ezbank.model.request.LoginRequest;
 import com.ezbank.model.response.User;
 import com.ezbank.service.UserService;
@@ -21,9 +22,24 @@ public class UserController {
         return userService.authenticateUser(request);
     }
 
+    @PostMapping(path = "/register")
+    public ResponseEntity<User> createUser(@RequestBody User request){
+        return userService.createUser(request);
+    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> authenticate(@PathVariable String id){
+    @PutMapping(path = "/update")
+    public ResponseEntity<User> updateUser(@RequestBody User request){
+        return userService.updateUser(request);
+    }
+
+    @GetMapping(path = "/name/{username}")
+    public ResponseEntity<UserEntity> getUserByName(@PathVariable String username){
+        return userService.getUserByName(username);
+    }
+
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable String id){
         return userService.getUser(id);
     }
 }

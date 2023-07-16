@@ -52,7 +52,7 @@ public class PushNotificationService {
             response.setId(entity.getId().toString());
             entity.setStatus("READ");
             pushNotificationRepository.save(entity);
-            PushNotificationMessage responseToBeSent = prepareMessage(response, username, userEntity.getLanguage());
+            PushNotificationMessage responseToBeSent = prepareMessage(response, userEntity.getFirstName(), userEntity.getLanguage());
             return ResponseEntity.ok(responseToBeSent);
 
         }else{

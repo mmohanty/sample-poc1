@@ -96,11 +96,21 @@ public class UserService {
             return ResponseEntity.badRequest().build();
         }
 
-        userEntity.setFirstName(request.getFirstName());
-        userEntity.setLastName(request.getLastName());
-        userEntity.setLanguage(request.getLanguage());
-        userEntity.setCvv(request.getCvv());
-        userEntity.setExpiryDate(request.getExpiryDate());
+        if(StringUtils.isNoneBlank(request.getFirstName())) {
+            userEntity.setFirstName(request.getFirstName());
+        }
+        if(StringUtils.isNoneBlank(request.getLastName())) {
+            userEntity.setLastName(request.getLastName());
+        }
+        if(StringUtils.isNoneBlank(request.getLanguage())) {
+            userEntity.setLanguage(request.getLanguage());
+        }
+        if(StringUtils.isNoneBlank(request.getCvv())) {
+            userEntity.setCvv(request.getCvv());
+        }
+        if(StringUtils.isNoneBlank(request.getExpiryDate())) {
+            userEntity.setExpiryDate(request.getExpiryDate());
+        }
         userRepository.save(userEntity);
         return ResponseEntity.ok(request);
     }

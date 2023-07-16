@@ -10,7 +10,7 @@ import java.net.InetAddress;
 
 public class TestLocation {
 
-    @Test
+    //@Test
     public void test() throws Exception{
         File database = new File("/Users/manasmohanty/Personal/Workspace/poc-whitepaper/GeoLite2-City_20230714/GeoLite2-City.mmdb");
 

@@ -1,5 +1,6 @@
 package com.ezbank.controller;
 
+import com.ezbank.entity.PushNotificationEntity;
 import com.ezbank.model.request.PushNotificationRequest;
 import com.ezbank.model.response.PushNotificationMessage;
 import com.ezbank.service.OTPService;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 @RequestMapping("/notification")
@@ -35,5 +37,10 @@ public class NotificationController {
     @PostMapping(path = "/pn/authorize")
     public ResponseEntity<String> authorizePushNotification(PushNotificationRequest pushNotificationRequest){
         return pushNotificationService.authorisePushNotification(pushNotificationRequest);
+    }
+
+    @GetMapping(path = "/pn/user/{username}/status/{status}")
+    public ResponseEntity<List<PushNotificationEntity>> getPushNotificationByStatus(@PathVariable String username, @PathVariable String status){
+        return pushNotificationService.getPushNotificationByStatus(username, status);
     }
 }

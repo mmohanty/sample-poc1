@@ -1,6 +1,7 @@
 package com.ezbank.repository;
 
 import com.ezbank.entity.PushNotificationEntity;
+import com.ezbank.model.response.PushNotificationMessage;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,6 @@ public interface PushNotificationRepository extends CrudRepository<PushNotificat
     public List<PushNotificationEntity> findByUsernameAndStatusOrderById(String username, String status);
 
     PushNotificationEntity findByUsernameAndTransactionId(String username, String transactionId);
+
+    List<PushNotificationEntity> findAllByUsernameAndStatus(String username, String status);
 }

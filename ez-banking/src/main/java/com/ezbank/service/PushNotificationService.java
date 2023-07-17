@@ -104,4 +104,11 @@ public class PushNotificationService {
 
         return ResponseEntity.ok("SUCCESS");
     }
+
+
+    public ResponseEntity<List<PushNotificationEntity>> getPushNotificationByStatus(String username, String status) {
+
+        List<PushNotificationEntity> messages = pushNotificationRepository.findAllByUsernameAndStatus(username, status);
+        return ResponseEntity.ok(messages);
+    }
 }

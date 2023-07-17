@@ -130,12 +130,12 @@ export class AppComponent implements OnInit {
     this.transactionReqest.receiverName = this.merchant?.name;
     this.transactionReqest.amount = this.dummyForm.value['amount'];
     this.otpRequest.cardNumber = this.transactionForm.value['cardNumber'];
-    console.log(this.transactionReqest);
-    this.saveUser(this.transactionReqest);
+    //console.log(this.transactionReqest);
+    this.initTransaction(this.transactionReqest);
     //this.isSubmitted = true;
   }
 
-  saveUser(transaction: any){
+  initTransaction(transaction: any){
     var url = `${environment.apiUrl}/transaction/initiate`;
 
     return this.http.post<TransactionResponse>(url, transaction)
@@ -150,7 +150,9 @@ export class AppComponent implements OnInit {
   }
 
   clearCardDetails() {
-
+      this.transactionForm.reset();
+      this.dummyForm.reset();
+      this.otpForm.reset();
 
   }
 
@@ -164,8 +166,10 @@ export class AppComponent implements OnInit {
         .subscribe(txn => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             //localStorage.setItem('txn', JSON.stringify(txn));
-            this.isSubmitted = true;
             this.transactionResponse = txn;
+            alert("Transaction is successful. Transaction id :: " + txn.id);
+            this.clearCardDetails();
+            this.isSubmitted = false;
             return txn;
         });
   }

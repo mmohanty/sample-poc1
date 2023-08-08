@@ -172,7 +172,9 @@ public class TransactionService {
         }else {
             location = Util.getLocation(reader, request.getIp());
         }
-        String date = new SimpleDateFormat(dateFormat).format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+        String date = sdf.format(new Date());
         PushNotificationMessage pushNotificationMessage = PushNotificationMessage.builder()
                 .regionName(location.getCity())
                 .receiverName(request.getReceiverName())

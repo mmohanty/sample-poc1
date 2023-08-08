@@ -91,14 +91,17 @@ public class TransactionService {
         UserEntity entity = userRepository.findByCardNumber(request.getCardNumber());
         TransactionRequest orgRequest = map.get(entity.getUsername()).get(request.getTransactionId());
         if(orgRequest == null){
+            System.out.println("No Original transaction found for user " + entity.getUsername() + " transaction Id :" + request.getTransactionId());
             return ResponseEntity.badRequest().build();
         }
         String otpMessage = otpService.getOtp(entity.getUsername());
         if(otpMessage == null || !transactionFailuerCountMap.containsKey(request.getTransactionId())){
+            System.out.println("No transaction found for user " + entity.getUsername() + " transaction Id :" + request.getTransactionId());
             return ResponseEntity.badRequest().body(TransactionResponse.builder().status("INVALID_TRANSACTION").build());
         }
 
         if(!StringUtils.equalsIgnoreCase(request.getOtp(), otpMessage)){
+            System.out.println("No OTP found for user " + entity.getUsername() + " transaction Id :" + request.getTransactionId());
             int remainingAttempt = transactionFailuerCountMap.get(request.getTransactionId());
             if(remainingAttempt == 1){
                 transactionFailuerCountMap.remove(request.getTransactionId());
@@ -131,6 +134,7 @@ public class TransactionService {
             TransactionResponse response = TransactionResponse.builder().id(request.getTransactionId()).status("SUCCESS").build();
             return ResponseEntity.ok(response);
         }else{
+            System.out.println("PN is not approved for " + entity.getUsername() + " transaction Id :" + request.getTransactionId());
             return ResponseEntity.badRequest().build();
         }
 

@@ -71,7 +71,7 @@ public class PushNotificationService {
             String h = date.getHours() == 0 ? " hour " : " hours ";
             String m = date.getMinutes() == 0 ? " minutes " : " minutes ";
             String s = date.getSeconds() == 0 ? " seconds" : " seconds";
-            String timePart = (date.getHours()+1) + h + + (date.getMinutes()+1) + m + (date.getSeconds()+1) + s;
+            String timePart = (date.getHours()) + h + + (date.getMinutes()+1) + m + (date.getSeconds()+1) + s;
             String formattedMessage = String.format(message, username, response.getAmount(), response.getReceiverName(),
                     location, strTimeDatePart, timePart);
             pushNotificationMessage.setId(response.getId());
@@ -93,6 +93,7 @@ public class PushNotificationService {
         if(entityOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
+        System.out.println("Authorizing PN " + pushNotificationRequest);
         PushNotificationEntity entity = entityOptional.get();
         entity.setStatus(pushNotificationRequest.getStatus());
 

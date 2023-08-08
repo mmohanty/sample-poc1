@@ -5,6 +5,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/app.home';
+import { PaymentDoneComponent } from './paymentcompleted/app.paymentdone';
 
 @NgModule({
     imports: [
@@ -14,7 +16,9 @@ import { AppComponent } from './app.component';
         AppRoutingModule
     ],
     declarations: [
-        AppComponent
+        AppComponent,
+        PaymentDoneComponent,
+        HomeComponent
     ],
     // providers: [
     //     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
@@ -22,6 +26,7 @@ import { AppComponent } from './app.component';
     //     // provider used to create fake backend
     //     //fakeBackendProvider
     // ],
+    providers: [],
     bootstrap: [AppComponent]
 })
 export class AppModule { };

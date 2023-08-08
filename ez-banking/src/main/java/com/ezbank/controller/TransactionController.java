@@ -23,7 +23,7 @@ public class TransactionController {
 
     @PostMapping(path = "/initiate")
     public ResponseEntity<TransactionResponse> initiate(@RequestBody TransactionRequest request){
-    return transactionService.initiate(request);
+        return transactionService.initiate(request);
     }
 
     @PostMapping(path = "/authorize")

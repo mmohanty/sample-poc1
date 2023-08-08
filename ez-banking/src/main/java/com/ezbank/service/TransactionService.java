@@ -134,7 +134,8 @@ public class TransactionService {
             TransactionResponse response = TransactionResponse.builder().id(request.getTransactionId()).status("SUCCESS").build();
             return ResponseEntity.ok(response);
         }else{
-            System.out.println("PN is not approved for " + entity.getUsername() + " transaction Id :" + request.getTransactionId());
+            System.out.println("PN is not approved for " + entity.getUsername() + " transaction Id :" + request.getTransactionId() + " current status :" +
+                    pushNotificationEntity.getStatus());
             return ResponseEntity.badRequest().build();
         }
 

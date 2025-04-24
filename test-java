@@ -75,3 +75,89 @@ public class JsonExecutionContextSerializer implements ExecutionContextSerialize
         return objectMapper.readValue(in, ExecutionContext.class);
     }
 }
+
+
+
+
+import org.springframework.batch.core.repository.dao.JdbcExecutionContextDao;
+import org.springframework.batch.item.ExecutionContext;
+import javax.sql.DataSource;
+import java.io.*;
+import java.util.Map;
+
+public class CustomJdbcExecutionContextDao extends JdbcExecutionContextDao {
+
+    public CustomJdbcExecutionContextDao() {
+        super();
+    }
+
+    @Override
+    protected byte[] serializeContext(ExecutionContext ctx) throws IOException {
+        // Custom serialization logic (e.g., JSON)
+        // For demo, let's use Java serialization
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(ctx);
+        oos.flush();
+        return bos.toByteArray();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected ExecutionContext deserializeContext(byte[] serializedContext) throws IOException {
+        // Custom deserialization logic
+        ByteArrayInputStream bis = new ByteArrayInputStream(serializedContext);
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        try {
+            return (ExecutionContext) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Failed to deserialize ExecutionContext", e);
+        }
+    }
+}
+
+
+import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
+
+@Configuration
+public class BatchConfig extends DefaultBatchConfigurer {
+
+    private final DataSource dataSource;
+
+    public BatchConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        // Override if needed
+        super.setDataSource(this.dataSource);
+    }
+
+    @Override
+    protected JobRepository createJobRepository() throws Exception {
+        JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
+        factory.setDataSource(this.dataSource);
+        factory.setTransactionManager(getTransactionManager());
+        factory.setIsolationLevelForCreate("ISOLATION_READ_COMMITTED");
+
+        // Inject custom ExecutionContext DAO
+        CustomJdbcExecutionContextDao customDao = new CustomJdbcExecutionContextDao();
+        customDao.setDataSource(this.dataSource);
+        customDao.afterPropertiesSet();
+
+        factory.setExecutionContextDao(customDao);
+        factory.afterPropertiesSet();
+        return factory.getObject();
+    }
+
+    private PlatformTransactionManager getTransactionManager() {
+        return super.getTransactionManager();
+    }
+}
